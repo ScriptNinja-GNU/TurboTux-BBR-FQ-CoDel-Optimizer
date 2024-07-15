@@ -27,7 +27,7 @@ git clone https://github.com/ScriptNinja-GNU/TurboTux-BBR-FQ-CoDel-Optimizer.git
 
 2. Navigate to the directory:
 ```
-cd bbr-fq-codel-optimizer
+cd TurboTux-BBR-FQ-CoDel-Optimizer
 ```
 
 3. Make the script executable:
