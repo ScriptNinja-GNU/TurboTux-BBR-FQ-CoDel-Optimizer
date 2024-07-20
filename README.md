@@ -17,28 +17,11 @@ Are you tired of sluggish network performance on your Debian-based server? Say h
 - Root access
 - Kernel version 4.9+ (5.x recommended for best performance)
 
-### 📦 Installation
-
-1. Clone this repository:
-
-```
-git clone https://github.com/ScriptNinja-GNU/TurboTux-BBR-FQ-CoDel-Optimizer.git
-```
-
-2. Navigate to the directory:
-```
-cd TurboTux-BBR-FQ-CoDel-Optimizer
-```
-
-3. Make the script executable:
-```
-chmod +x setup_bbr_fq_codel.sh
-```
-### 🚀 Usage
+### 📦 Installation & Usage
 
 Run the script with root privileges:
 ```
-sudo ./setup_bbr_fq_codel.sh
+git clone https://github.com/ScriptNinja-GNU/TurboTux-BBR-FQ-CoDel-Optimizer.git && cd TurboTux-BBR-FQ-CoDel-Optimizer && chmod +x setup_bbr_fq_codel.sh && sudo ./setup_bbr_fq_codel.sh
 ```
 
 Sit back and let the magic happen! The script will:
