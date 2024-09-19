@@ -22,14 +22,14 @@ apply_optimizations() {
     local sysctl_config="/etc/sysctl.d/99-bbr-fq-codel-optimizations.conf"
     cat > "$sysctl_config" << EOF
 # BBR and FQ-CoDel settings
-net.core.default_qdisc = fq_codel
+net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 
 # Increase the maximum TCP buffer sizes
 net.core.rmem_max = 67108864
 net.core.wmem_max = 67108864
-net.ipv4.tcp_rmem = 4096 87380 67108864
-net.ipv4.tcp_wmem = 4096 65536 67108864
+net.ipv4.tcp_rmem = 4096 87380 33554432
+net.ipv4.tcp_wmem = 4096 65536 33554432
 
 # Increase the maximum number of remembered connection requests
 net.ipv4.tcp_max_syn_backlog = 8192
@@ -50,10 +50,71 @@ net.ipv4.tcp_tw_reuse = 1
 net.ipv4.tcp_slow_start_after_idle = 0
 
 # Increase the UDP read buffer
-net.ipv4.udp_rmem_min = 8192
+net.ipv4.udp_rmem_min = 16384
 
 # Increase the maximum number of open files
-fs.file-max = 2097152
+fs.file-max = 1048576
+
+# VPN and Xray specific optimizations
+net.ipv4.ip_forward = 1
+net.ipv4.tcp_mtu_probing = 1
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 120
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_keepalive_intvl = 30
+
+# Enable TCP window scaling
+net.ipv4.tcp_window_scaling = 1
+
+# Increase TCP max buffer size setable using setsockopt()
+net.ipv4.tcp_rmem = 4096 87380 33554432
+net.ipv4.tcp_wmem = 4096 65536 33554432
+
+# Increase Linux autotuning TCP buffer limits
+net.ipv4.tcp_mem = 33554432 33554432 33554432
+
+# Increase the read-buffer space allocatable
+net.ipv4.udp_rmem_min = 16384
+net.ipv4.udp_wmem_min = 16384
+
+# Increase number of incoming connections backlog
+net.core.netdev_max_backlog = 16384
+net.core.somaxconn = 8192
+
+# Increase the maximum amount of memory buffers
+net.core.optmem_max = 65536
+
+# Enable low latency mode for BBR
+net.ipv4.tcp_low_latency = 1
+
+# Increase the maximum number of packets to process in a single iteration
+net.core.netdev_budget = 600
+net.core.netdev_budget_usecs = 8000
+
+# Enable direct packet sending from user-space to NIC
+net.core.busy_read = 50
+net.core.busy_poll = 50
+
+# Optimize network security
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.all.rp_filter = 1
+
+# Optimize for high-speed networks
+net.core.rmem_default = 1048576
+net.core.wmem_default = 1048576
+
+# Increase system-wide limit on number of open file descriptors
+fs.nr_open = 2097152
+
+# Optimize IPv4 network stack
+net.ipv4.tcp_sack = 1
+net.ipv4.tcp_timestamps = 1
+net.ipv4.tcp_fack = 1
+net.ipv4.tcp_ecn = 0
+net.ipv4.route.flush = 1
 EOF
 
     if ! sysctl -p "$sysctl_config"; then
