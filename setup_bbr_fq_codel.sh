@@ -19,7 +19,7 @@ apply_optimizations() {
         return 1
     fi
 
-    local sysctl_config="/etc/sysctl.d/99-bbr-fq-codel-optimizations.conf"
+    local sysctl_config="/etc/sysctl.conf"
     cat > "$sysctl_config" << EOF
 # BBR and FQ-CoDel settings
 net.core.default_qdisc = fq
